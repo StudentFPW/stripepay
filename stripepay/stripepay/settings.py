@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Packages ↓
     "rest_framework",
-    "rest_framework_simplejwt",
     "drf_yasg",
     "django_filters",
     "corsheaders",
@@ -78,7 +77,7 @@ ROOT_URLCONF = "stripepay.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -148,9 +147,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-    ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
+        "rest_framework.permissions.AllowAny",
+        # 'rest_framework.permissions.IsAuthenticated',
+    ]
 }
