@@ -4,10 +4,9 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.http.response import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 
-
-class PayView(TemplateView):
-    template_name = "pay.html"
+from .models import Item
 
 
 class SuccessView(TemplateView):
@@ -21,16 +20,16 @@ class CancelledView(TemplateView):
 @csrf_exempt
 def stripe_config(request):
     if request.method == "GET":
-        stripe_config = {"publicKey": settings.STRIPE_PUBLISHABLE_KEY}
-        return JsonResponse(stripe_config, safe=False)
+        return JsonResponse({"publicKey": settings.STRIPE_PUBLISHABLE_KEY}, safe=False)
 
 
 @csrf_exempt
-def create_checkout_session(request):
+def buy_item(request, id):
     if request.method == "GET":
         domain_url = "http://localhost:8000/"
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
+            item = Item.objects.get(id=id)
             checkout_session = stripe.checkout.Session.create(
                 client_reference_id=(
                     request.user.id if request.user.is_authenticated else None
@@ -41,9 +40,9 @@ def create_checkout_session(request):
                         "price_data": {
                             "currency": "usd",
                             "product_data": {
-                                "name": "Apple headsets - AirPods",
+                                "name": item.name,
                             },
-                            "unit_amount": 2000,
+                            "unit_amount": int(item.price) * 100,
                         },
                         "quantity": 1,
                     }
@@ -55,6 +54,16 @@ def create_checkout_session(request):
             return JsonResponse({"sessionId": checkout_session["id"]})
         except Exception as e:
             return JsonResponse({"error": str(e)})
+
+
+@csrf_exempt
+def view_item(request, id):
+    if request.method == "GET":
+        try:
+            item = Item.objects.get(id=id)
+            return render(request, "item.html", {"item": item})
+        except Item.DoesNotExist:
+            return HttpResponse(status=404)
 
 
 @csrf_exempt

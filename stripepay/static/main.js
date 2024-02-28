@@ -6,7 +6,8 @@ fetch("/config/")
         const stripe = Stripe(data.publicKey);
 
         document.querySelector("#submitBtn").addEventListener("click", () => {
-            fetch("/checkout/")
+            var currentUrl = window.location.href;
+            fetch(`/buy/${currentUrl[currentUrl.length - 2]}/`)
                 .then((request) => {
                     return request.json();
                 })
