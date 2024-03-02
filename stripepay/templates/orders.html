@@ -6,26 +6,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Details</title>
+    <title>Preview order</title>
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="{% static 'item.js' %}"></script>
+    <script src="{% static 'order.js' %}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v6.4.0/js/all.js"></script>
 </head>
 
 <body>
-    <h1>Item Details</h1>
-    {% if item %}
-        <h2>{{ item.name }}</h2>
-        <p>Description: {{ item.description }}</p>
-        <p>Price: {{ item.price }} {{ item.currency }}</p>
+    <h1>Preview order</h1>
+    {% if orders %}
+        <hr>
+        {% for order in orders %}
+            <h2>{{ order.item.name }}</h2>
+            <p>Description: {{ order.item.description }}</p>
+            <p>Price: {{ order.item.price }} {{ order.item.currency }}</p>
+            <hr>
+        {% endfor %}
         <section class="section">
             <div class="container">
                 <button class="button is-primary" id="submitBtn">Buy!</button>
             </div>
         </section>
     {% else %}
-        <p>Item not found.</p>
+        <p>Order not found.</p>
     {% endif %}
 </body>
 
