@@ -1,3 +1,5 @@
+/* Этот фрагмент кода JavaScript выполняет серию запросов на выборку для взаимодействия с серверным
+API. */
 fetch("/config/")
     .then((request) => {
         return request.json();
@@ -13,6 +15,9 @@ fetch("/config/")
                 })
                 .then((data) => {
                     return stripe.redirectToCheckout({ sessionId: data.sessionId })
+                })
+                .catch(() => {
+                    alert("Try again!")
                 });
         });
     });

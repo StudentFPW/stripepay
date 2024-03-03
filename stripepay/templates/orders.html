@@ -23,9 +23,11 @@
             <p>Price: {{ order.item.price }} {{ order.item.currency }}</p>
             <hr>
         {% endfor %}
+        <h1>Enter cupon code:</h1>
+        <input type="text" id="coupon_code">
         <section class="section">
             <div class="container">
-                <button class="button is-primary" id="submitBtn">Buy!</button>
+                <button class="button is-primary" id="submitBtn">Buy</button>
             </div>
         </section>
     {% else %}

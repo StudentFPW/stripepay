@@ -17,4 +17,6 @@ STRIPE_ENDPOINT_SECRET = ''
 ```bash
 https://docs.stripe.com/testing#cards
 https://docs.stripe.com/stripe-cli#install
+https://docs.stripe.com/billing/subscriptions/coupons
+https://docs.stripe.com/payments/checkout/discounts
 ```
